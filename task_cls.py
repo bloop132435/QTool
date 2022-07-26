@@ -10,11 +10,20 @@ import torch.nn.functional as F
 
 try:
     from tensorboardX import SummaryWriter
+except (ImportError, RuntimeError, FileNotFoundError) as e:
+    print('tensorboard')
+try:
     import utils
+except (ImportError, RuntimeError, FileNotFoundError) as e:
+    print('utils')
+try:
     import models
+except (ImportError, RuntimeError, FileNotFoundError) as e:
+    print('models')
+try:
     import datasets
 except (ImportError, RuntimeError, FileNotFoundError) as e:
-    print('import project module error', e)
+    print('datasets')
 
 dali_enable = True
 try:
@@ -49,7 +58,7 @@ def get_parser(parser=None):
     parser.add_argument('--input_size', default=None, type=int)
 
     # custom parameters for quantization related projects
-    parser.add_argument('--base', default=1, type=int, help='base used in GroupNet') 
+    parser.add_argument('--base', default=1, type=int, help='base used in GroupNet')
     parser.add_argument('--width_alpha', default=1.0, type=float, help='channel alpha')
     parser.add_argument('--block_alpha', default=1.0, type=float)
     parser.add_argument('--se_reduction', default=16, type=int, help='ratio in Squeeze-Excition Module')
@@ -159,7 +168,7 @@ def main(args=None):
         args.case = args.case.replace('dali', 'imagenet')
         args.dataset = 'imagenet'
         args.workers = 12
-        
+
     # log_dir
     if not os.path.exists(args.log_dir):
         os.makedirs(args.log_dir)
@@ -317,7 +326,7 @@ def main(args=None):
             logging.info("training without apex")
 
         if args.fp16:
-            optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay) # 
+            optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay) #
             model, optimizer = amp.initialize(model, optimizer, opt_level=args.opt_level)
 
         logging.info("evaluate the dataset on pretrained model...")
@@ -382,7 +391,7 @@ def main(args=None):
         elif key in quant_wrapper:
             custom_hyper.setdefault('lr_constant', args.custom_lr)
             custom_hyper['lr'] = args.custom_lr
-           
+
         params += [custom_hyper]
 
         if 'debug' in args.keyword:
@@ -518,7 +527,7 @@ def train(loader, model, criterion, optimizer, args, scheduler, epoch, lr):
         if args.device_ids is not None:
             input = input.cuda(non_blocking=True)
             target = target.cuda(non_blocking=True).long()
-        
+
         if args.mixup_enable:
             input, target_a, target_b, lam = utils.mixup_data(input, target, args.mixup_alpha, use_cuda=(args.device_ids is not None))
 
@@ -633,7 +642,7 @@ def validate(loader, model, criterion, args):
                 outputs = outputs[model._out_features[0]]
 
             loss = criterion(outputs, target)
- 
+
             prec1, prec5 = utils.accuracy(outputs, target, topk=(1, 5))
             top1.update(prec1.item(), input.size(0))
             top5.update(prec5.item(), input.size(0))
@@ -651,7 +660,7 @@ def validate(loader, model, criterion, args):
         loader.reset()
 
     return top1.avg, top5.avg, losses.avg
- 
+
 
 if __name__ == '__main__':
     main()
