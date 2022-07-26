@@ -33,6 +33,3 @@ log
 convert_onnx.py
 convert_onnx.sh
 
-# config
-memory.config
-config.*
