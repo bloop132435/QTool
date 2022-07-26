@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchvision.models.utils import load_state_dict_from_url
+from torch.hub import load_state_dict_from_url
 
 from .quant import custom_conv, custom_linear
 from .layers import norm, actv, concat
@@ -110,9 +110,9 @@ class Bottleneck(nn.Module):
         self.relu2 = nn.ReLU(inplace=True)
         self.relu3 = nn.ReLU(inplace=True)
         if args is not None and hasattr(args, 'keyword'):
-            self.relu1 = actv(args=args) 
-            self.relu2 = actv(args=args) 
-            self.relu3 = actv(args=args) 
+            self.relu1 = actv(args=args)
+            self.relu2 = actv(args=args)
+            self.relu3 = actv(args=args)
         ###
         self.conv1 = conv1x1(inplanes, width, args=args)
         self.bn1 = norm_layer(width, args=args)
