@@ -350,10 +350,10 @@ def main(args=None):
         args.stable = train_length * args.stable_epoch
         logging.info("update stable: %d" % args.stable)
 
-    # fix learning rate at the beginning to wakeup
-    if args.wakeup_epoch > 0 and args.wakeup <= 0:
-        args.wakeup = train_length * args.wakeup_epoch
-        logging.info("update wakeup: %d" % args.wakeup)
+    # fix learning rate at the beginning to warmup
+    if args.warmup_epoch > 0 and args.warmup <= 0:
+        args.warmup = train_length * args.warmup_epoch
+        logging.info("update warmup: %d" % args.warmup)
 
     params_dict = dict(model.named_parameters())
     params = []
@@ -444,7 +444,9 @@ def main(args=None):
 
     logging.info("start to train network " + model_name + ' with case ' + args.case)
     while epoch < (args.epochs + args.extra_epoch):
+        print("Start")
         if 'proxquant' in args.keyword:
+            print("proxquant")
             if args.proxquant_step < 10:
                 if args.lr_policy in ['sgdr', 'sgdr_step', 'custom_step']:
                     index = len([x for x in args.lr_custom_step if x <= epoch])
@@ -458,6 +460,7 @@ def main(args=None):
                         if m.prox < 0:
                             m.prox = 0
         if epoch < args.epochs:
+            print("beginning epoch")
             lr, scheduler = utils.setting_learning_rate(optimizer, epoch, train_length, checkpoint, args, scheduler)
         if lr is None:
             logging.info('lr is invalid at epoch %d' % epoch)
@@ -580,7 +583,7 @@ def train(loader, model, criterion, optimizer, args, scheduler, epoch, lr):
                         continue
                     param_group['lr'] = param_group['lr'] * (1.0 / args.wakeup) * iterations
                 logging.info('train {}/{}, change learning rate to lr * {}'.format(i, length, iterations / args.wakeup))
-            if iterations >= args.wakeup:
+            if iterations >= args.warmup:
                 optimizer.step()
 
         if 'sgdr' in args.lr_policy and scheduler is not None and torch.__version__ > "1.0.4" and epoch < args.epochs:
