@@ -10,6 +10,7 @@ val_batch=50
 epochs=10
 
 case='dali-fr-lqnet-finetune-2bit-bacs_0'
+case='official'
 keyword='cifar10,origin,preBN,bacs,custom-update'
 
 pretrained='none'
