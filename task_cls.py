@@ -12,18 +12,22 @@ try:
     from tensorboardX import SummaryWriter
 except (ImportError, RuntimeError, FileNotFoundError) as e:
     print('tensorboard')
+    print('import project module error', e)
 try:
     import utils
 except (ImportError, RuntimeError, FileNotFoundError) as e:
     print('utils')
+    print('import project module error', e)
 try:
     import models
 except (ImportError, RuntimeError, FileNotFoundError) as e:
     print('models')
+    print('import project module error', e)
 try:
     import datasets
 except (ImportError, RuntimeError, FileNotFoundError) as e:
     print('datasets')
+    print('import project module error', e)
 
 dali_enable = True
 try:
