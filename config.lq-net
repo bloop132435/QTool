@@ -13,7 +13,7 @@ keyword='cifar10,origin,preBN,bacs,custom-update,lq'
 
 pretrained='none'
 #pretrained='dali-fr-lqnet-finetune-2bit-bacs_0-model_best.pth.tar'
-options="$options --pretrained $pretrained"
+#options="$options --pretrained $pretrained"
 
 #options="$options --tensorboard"
 #options="$options --verbose"
