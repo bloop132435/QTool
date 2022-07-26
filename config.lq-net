@@ -23,3 +23,4 @@ pretrained='none'
 options="$options --fm_bit 2 --fm_enable"
 options="$options --wt_bit 2 --wt_enable"
 
+# vim: set filetype=sh

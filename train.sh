@@ -71,6 +71,6 @@ fi
 
 cd -
 
-#notify-send "cmd finished in $0" "`date`"
+notify-send "cmd finished in $0" "`date`"
 
 
