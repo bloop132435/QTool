@@ -350,10 +350,10 @@ def main(args=None):
         args.stable = train_length * args.stable_epoch
         logging.info("update stable: %d" % args.stable)
 
-    # fix learning rate at the beginning to warmup
-    if args.warmup_epoch > 0 and args.warmup <= 0:
-        args.warmup = train_length * args.warmup_epoch
-        logging.info("update warmup: %d" % args.warmup)
+    # fix learning rate at the beginning to wakeup
+    if args.wakeup_epoch > 0 and args.wakeup <= 0:
+        args.wakeup = train_length * args.wakeup_epoch
+        logging.info("update wakeup: %d" % args.wakeup)
 
     params_dict = dict(model.named_parameters())
     params = []
@@ -580,7 +580,7 @@ def train(loader, model, criterion, optimizer, args, scheduler, epoch, lr):
                         continue
                     param_group['lr'] = param_group['lr'] * (1.0 / args.wakeup) * iterations
                 logging.info('train {}/{}, change learning rate to lr * {}'.format(i, length, iterations / args.wakeup))
-            if iterations >= args.warmup:
+            if iterations >= args.wakeup:
                 optimizer.step()
 
         if 'sgdr' in args.lr_policy and scheduler is not None and torch.__version__ > "1.0.4" and epoch < args.epochs:
