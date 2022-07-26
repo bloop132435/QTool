@@ -147,7 +147,6 @@ class quantization(nn.Module):
 
             self.method = 'lqnet'
             if 'lq' in self.args.keyword:
-                print("lq net")
                 self.choice = 'lqnet'
             elif 'alq' in self.args.keyword:
                 self.choice = 'alqnet'
