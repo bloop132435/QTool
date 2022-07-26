@@ -1,5 +1,5 @@
 
-dataset='dali'
+dataset='cifar10'
 root=$FASTDIR/data/cifar10
 
 model='resnet18'
@@ -12,7 +12,7 @@ case='dali-fr-lqnet-finetune-2bit-bacs_0'
 keyword='cifar10,origin,preBN,bacs,custom-update,lq'
 
 pretrained='none'
-pretrained='dali-fr-lqnet-finetune-2bit-bacs_0-model_best.pth.tar'
+#pretrained='dali-fr-lqnet-finetune-2bit-bacs_0-model_best.pth.tar'
 options="$options --pretrained $pretrained"
 
 #options="$options --tensorboard"
