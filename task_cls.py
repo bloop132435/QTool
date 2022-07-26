@@ -407,6 +407,7 @@ def main(args=None):
         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.weight_decay)
 
     if args.optimizer == "SGD":
+        print('created optimizer')
         optimizer = torch.optim.SGD(params, lr=args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay,
