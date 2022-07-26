@@ -83,7 +83,7 @@ class quantization(nn.Module):
         if not self.enable:
             return
 
-        self.fan = 1 # mode = 'fan_in' as default 
+        self.fan = 1 # mode = 'fan_in' as default
         for i in range(len(self.shape)-1):
             self.fan *= self.shape[i+1]
 
@@ -147,6 +147,7 @@ class quantization(nn.Module):
 
             self.method = 'lqnet'
             if 'lq' in self.args.keyword:
+                print("lq net")
                 self.choice = 'lqnet'
             elif 'alq' in self.args.keyword:
                 self.choice = 'alqnet'
@@ -196,7 +197,7 @@ class quantization(nn.Module):
                     'element-scale': np.sqrt(self.nElements) * self.scale,
                     'scale-element': self.scale / np.sqrt(self.nElements),
                     }[self.grad_scale]
-            self.logger.info('update %s_grad_factor %f ( == 1 ? %s)' % 
+            self.logger.info('update %s_grad_factor %f ( == 1 ? %s)' %
                 (self.tag, self.grad_factor, 'True' if self.grad_factor == 1 else 'False' ))
 
             if self.tag == 'fm':
@@ -465,7 +466,7 @@ class quantization(nn.Module):
             return y
 
     def coordinate(self, alpha):
-        scale = [1.0/x if abs(x) < 1.0 else x for x in alpha] 
+        scale = [1.0/x if abs(x) < 1.0 else x for x in alpha]
 
         error = np.ones_like(alpha)
         shift = np.zeros_like(alpha)
@@ -809,7 +810,7 @@ class custom_linear(nn.Linear):
 
     def forward(self, inputs):
         if not self.force_fp:
-            shape = self.weight.shape 
+            shape = self.weight.shape
             weight = self.quant_weight(self.weight)
             weight = weight.reshape(shape)
 
