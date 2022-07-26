@@ -1,6 +1,6 @@
 
 dataset='dali'
-root=$FASTDIR/data/cifar
+root=$FASTDIR/data/cifar10
 
 model='resnet18'
 #options="$options --width_alpha 0.25"
