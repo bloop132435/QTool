@@ -82,6 +82,7 @@ class LqNet_fm(torch.autograd.Function):
                 code[i] = code[i] * 2 - 1
         codec = None
 
+        print(f"code: {code}")
         # calculate BTxX
         BTxX = inputs.new_zeros(bit, quant_group, 1)
         for i in range(bit):
@@ -95,14 +96,14 @@ class LqNet_fm(torch.autograd.Function):
         BTxB = inputs.new_zeros(bit*bit, quant_group, 1)
         for i in range(bit):
             for j in range(i+1):
-                value = (code[i] * code[j]).float().sum(dim=1, keepdim=True)
+                value = (code[i] * code[j]).float().sum(dim=1, keepdim=True) # NOTE all zeros
                 if i == j:
                     value = torch.where(value == 0, value.new_ones(value.shape) * 0.00001, value)
                 else:
                     BTxB[j*bit + i] = value
                 BTxB[i*bit + j] = value
         BTxB = BTxB.reshape(bit*bit, quant_group).reshape(bit, bit, quant_group).float()
-        print(f"btxb: {BTxB}")
+        print(f"btxb: {BTxB}") # NOTE mostly zeroes, except a couple of 1e-5 which happen when i==j
 
         # inverse
         BTxB_transpose = BTxB.transpose(0, 2).transpose(1, 2)
@@ -115,7 +116,7 @@ class LqNet_fm(torch.autograd.Function):
 
         new_basis = BTxB_inv * BTxX.expand_as(BTxB_inv) # TODO Should be matrix multiplication?? I'm not sure how to write it
         #  print(f"btxb_inv {BTxB_inv}") # NOTE almost all zeros, except a couple 100,000s
-        print(f"BTXX {BTxX}") # NOTE All zeros
+        #  print(f"BTXX {BTxX}") # NOTE All zeros
         new_basis = new_basis.sum(dim=1, keepdim=True)
         new_basis = new_basis.squeeze(1)
         auxil.data = new_basis
