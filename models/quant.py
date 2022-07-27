@@ -669,7 +669,7 @@ class quantization(nn.Module):
         elif self.tag == 'wt':
             base = NORM_PPF_0_75 * ((2. / self.fan) ** 0.5) / (2 ** (self.bit - 1))
         for i in range(self.bit):
-            init_basis.append([(2 ** i) * base for j in range(self.quant_group)])
+            init_basis.append([(2 ** j) * base for j in range(self.quant_group)])
         self.basis.data = torch.FloatTensor(init_basis)
 
         # initialize level_codes
