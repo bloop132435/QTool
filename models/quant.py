@@ -230,7 +230,7 @@ class quantization(nn.Module):
                     if 'closed_form' in self.args.keyword or 'fm_closed_form' in self.args.keyword:
                         if self.quant_group != 1:
                             raise RuntimeError("function for verified")
-                        self.basis = nn.Parameter(torch.ones (1), requires_grad=False)
+                        self.basis = nn.Parameter(torch.zeros(1), requires_grad=False)
                         self.auxil = nn.Parameter(torch.zeros(1), requires_grad=False)
                         self.choice = self.choice + '-with-closed_form'
                 elif 'pact' in self.args.keyword:
@@ -656,7 +656,7 @@ class quantization(nn.Module):
         raise RuntimeError("Should not reach here in quant.py")
 
     def lq_net_init(self):
-        self.basis = nn.Parameter(torch.ones(self.bit, self.quant_group), requires_grad=False)
+        self.basis = nn.Parameter(torch.ones(self.bit, self.quant_group)*0.001, requires_grad=False)
         self.auxil = nn.Parameter(torch.zeros(self.bit, self.quant_group), requires_grad=False)
         self.codec_vector = nn.Parameter(torch.ones(self.num_levels, self.bit), requires_grad=False)
         self.codec_index = nn.Parameter(torch.ones(self.num_levels, dtype=torch.int), requires_grad=False)
