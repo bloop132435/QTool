@@ -78,7 +78,7 @@ class LqNet_fm(torch.autograd.Function):
         print(f"codec: {codec}")
         code = codec.new_ones(bit, x.shape[0], x.shape[1], dtype=torch.int8)
         for i in range(bit):
-            code[i] = codec / (2**i) - codec / (2**(i+1)) * 2
+            code[i] = torch.floor(codec / (2**i)) - torch.floor(codec / (2**(i+1)) * 2)
             if not half_range:
                 code[i] = code[i] * 2 - 1
         codec = None
