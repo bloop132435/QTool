@@ -115,7 +115,7 @@ class LqNet_fm(torch.autograd.Function):
         new_basis = new_basis.sum(dim=1, keepdim=True)
         new_basis = new_basis.squeeze(1)
         auxil.data = new_basis
-        basis = 0.9 * basis + 0.1 * new_basis
+        basis = 0.95 * basis + 0.05 * new_basis
         #  print(new_basis)
         ctx.save_for_backward(inputs, levels[num_levels - 1])
         return y, basis
