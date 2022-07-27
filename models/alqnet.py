@@ -112,7 +112,7 @@ class LqNet_fm(torch.autograd.Function):
             raise RuntimeError("LqNet_fm matrix has no inverse for weight %r" % BTxB_transpose)
         BTxB_inv = BTxB_inv.transpose(1, 2).transpose(0, 2)
 
-        new_basis = torch.matmul(BTxB_inv , BTxX.expand_as(BTxB_inv))
+        new_basis = torch.matmul(BTxB_inv , BTxX)
         new_basis = new_basis.sum(dim=1, keepdim=True)
         new_basis = new_basis.squeeze(1)
         auxil.data = new_basis
