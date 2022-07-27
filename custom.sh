@@ -56,8 +56,6 @@ nvidia-smi
 python main.py --dataset cifar10 --root $FASTDIR/data/cifar10 \
   --model resnet18 --base 1 \
   --epochs 50 -b 100 -v 100 \
-  --case official --keyword cifar10,bacs \
+  --case official --keyword cifar10,bacs,lq \
   --delay 0 \
   $options
-
-result=$?
