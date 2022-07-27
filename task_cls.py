@@ -1,11 +1,15 @@
-import os, sys, glob, time
-import numpy as np
-import logging
 import argparse
+import glob
+import logging
+import os
+import sys
 import time
+import time
+
+import numpy as np
 import torch
-import torch.nn as nn
 import torch.backends.cudnn as cudnn
+import torch.nn as nn
 import torch.nn.functional as F
 
 try:
@@ -184,7 +188,7 @@ def main(args=None):
     else:
         log_suffix = model_arch + '-' + args.case
     utils.setup_logging(os.path.join(args.log_dir, log_suffix + '.txt'), resume=args.resume)
-
+    print(args)
     logging.info("current folder: %r", os.getcwd())
     logging.info("alqnet plugins: %r", plugin_enable)
     logging.info("apex available: %r", apex_enable)

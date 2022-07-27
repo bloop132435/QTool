@@ -149,8 +149,8 @@ class Bottleneck(nn.Module):
 class ResNet(nn.Module):
 
     def __init__(self, block, layers, num_classes=1000, zero_init_residual=False,
-                 groups=1, width_per_group=64, replace_stride_with_dilation=None,
-                 norm_layer=None, args=None):
+            groups=1, width_per_group=64, replace_stride_with_dilation=None,
+            norm_layer=None, args=None):
         super(ResNet, self).__init__()
         self.args = args
         if norm_layer is None:
@@ -165,7 +165,7 @@ class ResNet(nn.Module):
             replace_stride_with_dilation = [False, False, False]
         if len(replace_stride_with_dilation) != 3:
             raise ValueError("replace_stride_with_dilation should be None "
-                             "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
+                    "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
         self.groups = groups
         self.base_width = width_per_group
         self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
@@ -182,11 +182,11 @@ class ResNet(nn.Module):
 
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2,
-                                       dilate=replace_stride_with_dilation[0])
+                dilate=replace_stride_with_dilation[0])
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2,
-                                       dilate=replace_stride_with_dilation[1])
+                dilate=replace_stride_with_dilation[1])
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
-                                       dilate=replace_stride_with_dilation[2])
+                dilate=replace_stride_with_dilation[2])
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
         if args is not None and hasattr(args, 'keyword'):
@@ -222,18 +222,18 @@ class ResNet(nn.Module):
                 if 'real_skip' in self.args.keyword:
                     force_fp = True
             downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * block.expansion, stride, args=self.args, force_fp=force_fp),
-                norm(planes * block.expansion, args=self.args),
-            )
+                    conv1x1(self.inplanes, planes * block.expansion, stride, args=self.args, force_fp=force_fp),
+                    norm(planes * block.expansion, args=self.args),
+                    )
 
         layers = []
         layers.append(block(self.inplanes, planes, stride, downsample, self.groups,
-                            self.base_width, previous_dilation, norm, args=self.args))
+            self.base_width, previous_dilation, norm, args=self.args))
         self.inplanes = planes * block.expansion
         for _ in range(1, blocks):
             layers.append(block(self.inplanes, planes, groups=self.groups,
-                                base_width=self.base_width, dilation=self.dilation,
-                                norm_layer=norm, args=self.args))
+                base_width=self.base_width, dilation=self.dilation,
+                norm_layer=norm, args=self.args))
 
         return nn.Sequential(*layers)
 
