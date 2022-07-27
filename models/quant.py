@@ -656,7 +656,7 @@ class quantization(nn.Module):
         raise RuntimeError("Should not reach here in quant.py")
 
     def lq_net_init(self):
-        self.basis = nn.Parameter(torch.ones(self.bit, self.quant_group)*0.001, requires_grad=False)
+        self.basis = nn.Parameter(torch.zeros(self.bit, self.quant_group), requires_grad=False)
         self.auxil = nn.Parameter(torch.zeros(self.bit, self.quant_group), requires_grad=False)
         self.codec_vector = nn.Parameter(torch.ones(self.num_levels, self.bit), requires_grad=False)
         self.codec_index = nn.Parameter(torch.ones(self.num_levels, dtype=torch.int), requires_grad=False)
