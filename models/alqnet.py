@@ -20,6 +20,7 @@ __EPS__ = 1e-5
 
 ## LQ-net
 class LqNet_fm(torch.autograd.Function):
+    # TODO this this always results in new_basis == [0,0...], so basis just decreases from update_bias every time
     @staticmethod
     def forward(ctx, inputs, basis, codec_vector, codec_index, thrs_multiplier, training=True, half_range=False, auxil=None, adaptive='none'):
         num_levels = codec_vector.shape[0]
@@ -33,16 +34,16 @@ class LqNet_fm(torch.autograd.Function):
         # calculate threshold
         thrs = torch.matmul(thrs_multiplier, levels) # [(num_levels - 1) * num_levels] * [num_levels * quant_group]
 
-        # pre-processing of the inputs, according to adaptive
-        if adaptive == 'mean':
-            mean = inputs.mean([1,2,3], keepdim=True) + __EPS__
-            inputs = inputs / mean
-        if adaptive == 'var':
-            std = inputs.std([1,2,3], keepdim=True) + __EPS__
-            inputs = inputs / std
-        if adaptive == 'min':
-            lower = inputs.min()
-            inputs = inputs - lower
+        #  # pre-processing of the inputs, according to adaptive
+        #  if adaptive == 'mean':
+            #  mean = inputs.mean([1,2,3], keepdim=True) + __EPS__
+            #  inputs = inputs / mean
+        #  if adaptive == 'var':
+            #  std = inputs.std([1,2,3], keepdim=True) + __EPS__
+            #  inputs = inputs / std
+        #  if adaptive == 'min':
+            #  lower = inputs.min()
+            #  inputs = inputs - lower
 
         # feature map: b * c * h * w   | b * c
         if quant_group != 1:
@@ -62,16 +63,16 @@ class LqNet_fm(torch.autograd.Function):
 
         # y is ready here, means forward has been finished
         y = y.reshape(x_shape)
-        if quant_group != 1:
-            y = y.transpose(1,0) # cbhw --> bchw
-        if adaptive == 'mean':
-            y = y * mean
-        if adaptive == 'var':
-            y = y * std
-        if adaptive == 'min':
-            y = y + lower
-        if not training:
-            return y, basis
+        #  if quant_group != 1:
+            #  y = y.transpose(1,0) # cbhw --> bchw
+        #  if adaptive == 'mean':
+            #  y = y * mean
+        #  if adaptive == 'var':
+            #  y = y * std
+        #  if adaptive == 'min':
+            #  y = y + lower
+        #  if not training:
+            #  return y, basis
 
         # contine to compute the gradident of basis to avoid saving buffer to backward
         code = codec.new_ones(bit, x.shape[0], x.shape[1], dtype=torch.int8)
@@ -111,7 +112,7 @@ class LqNet_fm(torch.autograd.Function):
             raise RuntimeError("LqNet_fm matrix has no inverse for weight %r" % BTxB_transpose)
         BTxB_inv = BTxB_inv.transpose(1, 2).transpose(0, 2)
 
-        new_basis = BTxB_inv * BTxX.expand_as(BTxB_inv)
+        new_basis = torch.matmul(BTxB_inv , BTxX.expand_as(BTxB_inv))
         new_basis = new_basis.sum(dim=1, keepdim=True)
         new_basis = new_basis.squeeze(1)
         auxil.data = new_basis

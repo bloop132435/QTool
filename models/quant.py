@@ -687,12 +687,12 @@ class quantization(nn.Module):
                 level_multiplier_i[j] = float(binary_code)
                 level_number = level_number // 2
             init_level_multiplier.append(level_multiplier_i)
-        self.codec_vector.data = torch.FloatTensor(init_level_multiplier)
+        self.codec_vector.data = torch.FloatTensor(init_level_multiplier) # this is just all binary numbers using num_bits bits
 
         init_codec_index = []
         for i in range(self.num_levels):
             init_codec_index.append(i)
-        self.codec_index.data= torch.IntTensor(init_codec_index)
+        self.codec_index.data= torch.IntTensor(init_codec_index) # index of the binary numbers
 
 class custom_conv(nn.Conv2d):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=False,
