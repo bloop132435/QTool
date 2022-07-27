@@ -440,6 +440,7 @@ class quantization(nn.Module):
             self.basis.data = self.basis.data * self.iteration  + self.auxil
             self.iteration.data = self.iteration.data + 1
             self.basis.data = self.basis.data / self.iteration
+        print(basis)
         print(self.basis[:,0])
         print(self.basis.data.size())
 
