@@ -75,7 +75,7 @@ class LqNet_fm(torch.autograd.Function):
             #  return y, basis
 
         # contine to compute the gradident of basis to avoid saving buffer to backward
-        print(f"codec: {codec}")
+        #  print(f"codec: {codec}")
         code = codec.new_ones(bit, x.shape[0], x.shape[1], dtype=torch.int8)
         for i in range(bit):
             code[i] = torch.floor(codec / (2**i)) - torch.floor(codec / (2**(i+1)) * 2)
