@@ -440,7 +440,7 @@ class quantization(nn.Module):
             self.basis.data = self.basis.data * self.iteration  + self.auxil
             self.iteration.data = self.iteration.data + 1
             self.basis.data = self.basis.data / self.iteration
-        print(self.basis.data)
+        print(self.basis.data.size())
 
     def quantization_value(self, x, y):
         if self.iteration.data <= self.stable:
