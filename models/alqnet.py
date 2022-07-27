@@ -101,7 +101,7 @@ class LqNet_fm(torch.autograd.Function):
                 else:
                     BTxB[j*bit + i] = value
                 BTxB[i*bit + j] = value
-        BTxB = BTxB.reshape(bit*bit, quant_group).reshape(bit, bit, quant_group).float()
+        BTxB = BTxB.reshape(bit*bit, quant_group).reshape(bit, bit, quant_group).float().squeeze()
         print(f"btxb size: {BTxB.size()}")
 
         # inverse
