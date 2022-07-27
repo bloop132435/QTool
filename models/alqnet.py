@@ -116,6 +116,7 @@ class LqNet_fm(torch.autograd.Function):
         new_basis = new_basis.squeeze(1)
         auxil.data = new_basis
         basis = 0.9 * basis + 0.1 * new_basis
+        print(new_basis)
         ctx.save_for_backward(inputs, levels[num_levels - 1])
         return y, basis
 
@@ -218,8 +219,8 @@ class LqNet_wt(torch.autograd.Function):
                 if i == j:
                     value = (value + 0.0001) * 1.000001
                 else:
-                    BTxB[j*bit + i] = value 
-                BTxB[i*bit + j] = value 
+                    BTxB[j*bit + i] = value
+                BTxB[i*bit + j] = value
         BTxB = BTxB.reshape(bit*bit, quant_group).reshape(bit, bit, quant_group).float()
 
         # inverse
