@@ -75,6 +75,7 @@ class LqNet_fm(torch.autograd.Function):
             #  return y, basis
 
         # contine to compute the gradident of basis to avoid saving buffer to backward
+        print(f"codec: {codec}")
         code = codec.new_ones(bit, x.shape[0], x.shape[1], dtype=torch.int8)
         for i in range(bit):
             code[i] = codec / (2**i) - codec / (2**(i+1)) * 2
@@ -82,7 +83,7 @@ class LqNet_fm(torch.autograd.Function):
                 code[i] = code[i] * 2 - 1
         codec = None
 
-        print(f"code: {code}")
+        #  print(f"code: {code}")# NOTE All zeros
         # calculate BTxX
         BTxX = inputs.new_zeros(bit, quant_group, 1)
         for i in range(bit):
@@ -103,7 +104,7 @@ class LqNet_fm(torch.autograd.Function):
                     BTxB[j*bit + i] = value
                 BTxB[i*bit + j] = value
         BTxB = BTxB.reshape(bit*bit, quant_group).reshape(bit, bit, quant_group).float()
-        print(f"btxb: {BTxB}") # NOTE mostly zeroes, except a couple of 1e-5 which happen when i==j
+        #  print(f"btxb: {BTxB}") # NOTE mostly zeroes, except a couple of 1e-5 which happen when i==j
 
         # inverse
         BTxB_transpose = BTxB.transpose(0, 2).transpose(1, 2)
