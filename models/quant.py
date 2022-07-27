@@ -663,7 +663,7 @@ class quantization(nn.Module):
 
         init_basis = []
         #  NORM_PPF_0_75 = 0.6745
-        NORM_PPF_0_75 = 50
+        NORM_PPF_0_75 = 2
         if self.tag == 'fm':
             base = NORM_PPF_0_75 * 2. / (2 ** (self.bit - 1))
         elif self.tag == 'wt':
