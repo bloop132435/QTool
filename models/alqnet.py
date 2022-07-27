@@ -105,14 +105,14 @@ class LqNet_fm(torch.autograd.Function):
         print(f"btxb size: {BTxB.size()}")
 
         # inverse
-        BTxB_transpose = BTxB.transpose()
+        BTxB_transpose = torch.t(BTxB)
         print(f"btxb transpose size: {BTxB_transpose.size()}")
         try:
             BTxB_inv = torch.inverse(BTxB_transpose)
         except RuntimeError:
             logging.info("LqNet_fm matrix has not inverse %r" % BTxB_transpose)
             raise RuntimeError("LqNet_fm matrix has no inverse for weight %r" % BTxB_transpose)
-        BTxB_inv = BTxB_inv.transpose()
+        BTxB_inv = torch.t(BTxB_inv)
         print(f"btxb_inv size {BTxB_inv.size()}")
 
         new_basis = BTxB_inv * BTxX.expand_as(BTxB_inv)
