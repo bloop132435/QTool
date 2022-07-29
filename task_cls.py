@@ -609,8 +609,8 @@ def train(loader, model, criterion, optimizer, args, scheduler, epoch, lr):
 
         if epoch == 0 and i == 10:
             logging.info(utils.gpu_info())
-        if args.delay > 0:
-            time.sleep(args.delay)
+        #  if args.delay > 0:
+            #  time.sleep(args.delay)
 
         input = None
         target = None

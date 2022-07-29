@@ -53,7 +53,7 @@ options=''
 
 
 python main.py --dataset cifar10 --root $FASTDIR/data/cifar10 \
-  --model mobilenetv2 --base 1 \
+  --model vgg_small --base 1 --weight_decay 0.001 --nesterov\
   --epochs 500 -b 100 -v 100 \
   --case official --keyword cifar10,bac,lq,bacs \
   --delay 0 \
