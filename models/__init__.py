@@ -10,17 +10,17 @@ try:
 
     #from .vgg import vgg16_bn as pytorch_vgg16bn
     from .vgg_small_ import vgg_small
-    
+
     #from .alexnet_ import alexnet as alexnet_  # revise from XNOR-Net-PyTorch
     from .nin_ import nin as nin_
-    
-    #from .mobilenet import mobilenetv2, mobilenetv1
+
+    from .mobilenet import mobilenetv2, mobilenetv1
 
     #from .densenet import densenet121
     #from .nasnet import nasnet
     #from .squeezenet import squeezenet
 
-    from . import policy 
+    from . import policy
 except (ImportError, RuntimeError, FileNotFoundError, PermissionError) as e:
     print('import classification model failed', e)
 
