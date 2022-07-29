@@ -55,7 +55,7 @@ options=''
 python main.py --dataset cifar10 --root $FASTDIR/data/cifar10 \
   --model mobilenetv2 --base 1 \
   --epochs 500 -b 100 -v 100 \
-  --case official --keyword cifar10,bac,lq \
+  --case official --keyword cifar10,bac,lq,bacs \
   --delay 0 \
   --fm_bit 3 --wt_bit 3 --fm_enable --wt_enable\
   --save_freq 1
