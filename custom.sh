@@ -51,13 +51,12 @@ fi
 
 options=''
 
-nvidia-smi
 
 python main.py --dataset cifar10 --root $FASTDIR/data/cifar10 \
-  --model resnet18 --base 1 \
+  --model mobilenetv2 --base 1 \
   --epochs 50 -b 100 -v 100 \
   --case official --keyword cifar10,bacs,lq \
   --delay 0 \
-  --fm_bit 8 --wt_bit 7 --fm_enable --wt_enable\
+  --fm_bit 3 --wt_bit 3 --fm_enable --wt_enable\
   --save_freq 1
   $options

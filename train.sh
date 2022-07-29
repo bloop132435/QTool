@@ -50,7 +50,6 @@ fi
 
 if [ "$2" != "" ]; then script=$2; fi
 
-nvidia-smi
 
 python $script --dataset $dataset --root $root \
   --model $model --base $base \
